@@ -1,0 +1,26 @@
+{
+  "name": "excel-like-grid",
+  "version": "0.0.0",
+  "authors": [
+    "Anton Nekipelov <anton.nekipelov@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".jshintrc",
+    "Gruntfile.js",
+    "index.html",
+    "module.js",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+      "connect-grid": "git@github.com:schubergphilis/connect-grid.git#0.0.10",
+      "angular-ui-select2": "git@github.com:schubergphilis/ui-select2.git#v20140708"
+  }
+}

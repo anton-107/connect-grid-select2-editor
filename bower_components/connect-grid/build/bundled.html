@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles/grid.css"/>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="build.js"></script>
+    <style>
+        .country-cell {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body ng-controller="gridDemoController">
+
+<connect-grid class="grid" ng-model="data"></connect-grid>
+
+<div style="clear: both"></div>
+
+<div ng-repeat="row in data">
+    {{ row }}
+</div>
+
+<script>
+    var app = angular.module('gridDemo', ['connect-grid'])
+            .directive('customEditor', [function () {
+                return {
+                    restrict: 'E',
+                    link: function (scope, element, attrs) {
+
+                        scope.data = [
+                            {id: 1, name: 'United States'},
+                            {id: 2, name: 'China'},
+                            {id: 3, name: 'India'},
+                            {id: 4, name: 'Japan'},
+                            {id: 5, name: 'Germany'}
+                        ];
+
+                        element.find('select').on('blur', function () {
+                            scope.confirmEditing();
+                            scope.finishEditing();
+                        });
+
+                        element.find('select').on('click', function (e) {
+                            e.stopPropagation();
+                        });
+
+                        scope.$on('editorFocus', function () {
+                            element.find("select")[0].focus();
+
+                            var rowsMatching = _.filter(scope.data, function (obj) {
+                                return obj.name.indexOf(scope.value) === 0;
+                            });
+
+                            if (rowsMatching.length > 0) {
+                                scope.value = rowsMatching[0].name;
+                            }
+                        });
+
+                    },
+                    template: '<select ng-model="value"><option ng-repeat="row in data" value="{{ row.name }}">{{ row.name }}</option></select>'
+                };
+            }])
+            .controller('gridDemoController', ['$scope', '$timeout', function ($scope, $timeout) {
+                $scope.data = [
+                    {id: 1, name: 'United States', shortName: 'USA', gdp2013: 15724575, population: 318366000},
+                    {id: 2, name: 'China', shortName: 'CHI', gdp2013: 13374017, population: 1365520000},
+                    {id: 3, name: 'India', shortName: 'IND', gdp2013: 4961712, population: 12465000000},
+                    {id: 4, name: 'Japan', shortName: 'JPN', gdp2013: 4728865, population: 127090000},
+                    {id: 5, name: 'Germany', shortName: 'JPN', gdp2013: 3226627, population: 80716000},
+                ];
+
+                $scope.isLoading = false;
+
+                $scope.gridOptions = {
+                    columnDefs: [
+                        {
+                            renderer: function (obj, row, col) {
+                                return col;
+                            },
+                            cellTemplate: '<span><span ng-show="isLoading">...</span><span ng-show="!isLoading">{{ renderCellContent($parent.$index, $index) }}</span></span>',
+                            width: 25,
+                            selectable: false
+                        },
+                        {field: 'name', displayName: 'Country', width: 200, cellClass: 'country-cell', editableCellTemplate: '<custom-editor />'},
+                        {field: 'gdp2013', displayName: 'GPD (2013)', width: 100, renderer: function (value, row, rowIndex, colIndex) {
+//                            console.log("args", arguments);
+                            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }},
+                        {field: 'population', displayName: 'Population'},
+                        {
+                            selectable: false,
+                            renderer: function () {
+                                return;
+                            }
+                        },
+                        {
+                            renderer: function () {
+                                return;
+                            }
+                        }
+                    ],
+                    onCellValueChange: function (object, changedColumnName, newVal, oldVal) {
+//                        console.log(arguments);
+                    },
+                    onRowSelect: function (object) {
+//                        console.log("selected row", object);
+                    },
+                    activeCellKeyBindings: {
+                        'meta d': function (row, column, value) {
+                            console.log("cmd+d is called on row", row, column, value);
+                        },
+                        'meta y': function (row, column, value) {
+                            $scope.data.splice(_.indexOf($scope.data, row), 1);
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        }
+                    }
+                }
+            }]);
+    angular.bootstrap(document, ['gridDemo']);
+</script>
+
+</body>
+</html>

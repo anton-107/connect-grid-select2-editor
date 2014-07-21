@@ -1,0 +1,1 @@
+window.angular.module('connect-grid-select2-editor', ['ui.select2']);

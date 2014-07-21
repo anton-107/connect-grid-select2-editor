@@ -1,0 +1,37 @@
+{
+  "name": "excel-like-grid",
+  "version": "0.0.10",
+  "authors": [
+    "Anton Nekipelov <anton.nekipelov@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".jshintrc",
+    "Gruntfile.js",
+    "index.html",
+    "module.js",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "angular": "~1.2.19",
+    "underscore": "~1.6.0",
+    "Keypress": "~2.0.2"
+  },
+  "homepage": "https://github.com/schubergphilis/connect-grid",
+  "_release": "0.0.10",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.10",
+    "commit": "e8419a2839ce8ba9c5270093240eef510d756727"
+  },
+  "_source": "git@github.com:schubergphilis/connect-grid.git",
+  "_target": "0.0.10",
+  "_originalSource": "git@github.com:schubergphilis/connect-grid.git"
+}

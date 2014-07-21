@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="bower_components/connect-grid/styles/grid.css"/>
+    <link rel="stylesheet" href="bower_components/select2/select2.css">
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+
+    <script src="bower_components/select2/select2.js"></script>
+    <script src="bower_components/angular-ui-select2/src/select2.js"></script>
+
+    <script src="bower_components/connect-grid/build/build.js"></script>
+
+    <!-- build:js:bundle build.js -->
+    <script src="module.js"></script>
+    <script src="js/select2-editor-directive.js"></script>
+    <!-- /build -->
+    <style>
+        .country-cell {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body ng-controller="gridDemoController">
+
+<connect-grid class="grid" ng-model="data"></connect-grid>
+
+<div style="clear: both"></div>
+
+<div ng-repeat="row in data">
+    {{ row }}
+</div>
+
+<script>
+    var app = angular.module('gridDemo', ['connect-grid', 'connect-grid-select2-editor'])
+            .controller('gridDemoController', ['$scope', '$timeout', function ($scope, $timeout) {
+                $scope.countriesList = [
+                    {id: 1, name: 'United States'},
+                    {id: 2, name: 'China'},
+                    {id: 3, name: 'India'},
+                    {id: 4, name: 'Japan'},
+                    {id: 5, name: 'Germany'}
+                ];
+
+                $scope.data = [
+                    {id: 1, country: 1, shortName: 'USA', gdp2013: 15724575, population: 318366000},
+                    {id: 2, country: 2, shortName: 'CHI', gdp2013: 13374017, population: 1365520000},
+                    {id: 3, country: 3, shortName: 'IND', gdp2013: 4961712, population: 12465000000},
+                    {id: 4, country: 4, shortName: 'JPN', gdp2013: 4728865, population: 127090000},
+                    {id: 5, country: 5, shortName: 'JPN', gdp2013: 3226627, population: 80716000}
+                ];
+
+                $scope.gridOptions = {
+                    columnDefs: [
+                        {
+                            field: 'country', displayName: 'Country', width: 200, cellClass: 'country-cell', editableCellTemplate: '<select2-cell-editor data="countriesList" />',
+                            renderer: function (value) {
+                                var country = _.findWhere($scope.countriesList, { id: Number(value) });
+                                if (country) {
+                                    return country.name;
+                                }
+                            }
+                        },
+                        {field: 'gdp2013', displayName: 'GPD (2013)', width: 100, renderer: function (value, row, rowIndex, colIndex) {
+                            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }},
+                        {field: 'population', displayName: 'Population'}
+                    ]
+                }
+            }]);
+    angular.bootstrap(document, ['gridDemo']);
+</script>
+
+</body>
+</html>
