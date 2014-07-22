@@ -11,6 +11,9 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
 
                     element.on('select2-close', function () {
                         $timeout(function () {
+                            // overwrite ui-select2 model value with value read directly from select2:
+                            scope.value = element.find('select').select2('val');
+
                             if (scope.value) {
                                 var selectedItem;
 
