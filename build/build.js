@@ -18,7 +18,7 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
                                 var selectedItem;
 
                                 // convert number coming as string into a number:
-                                if (!isNaN(+scope.value)) {
+                                if (scope.value !== null && !isNaN(+scope.value)) {
                                     scope.value = Number(scope.value);
                                 }
 
@@ -40,7 +40,7 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
 
                     scope.$on('editorFocus', function () {
                         // convert number coming as string into a number:
-                        if (!isNaN(+scope.value)) {
+                        if (scope.value !== null && !isNaN(+scope.value)) {
                             scope.value = Number(scope.value);
                         }
 

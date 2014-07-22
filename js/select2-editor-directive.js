@@ -17,7 +17,7 @@
                                 var selectedItem;
 
                                 // convert number coming as string into a number:
-                                if (!isNaN(+scope.value)) {
+                                if (scope.value !== null && !isNaN(+scope.value)) {
                                     scope.value = Number(scope.value);
                                 }
 
@@ -39,7 +39,7 @@
 
                     scope.$on('editorFocus', function () {
                         // convert number coming as string into a number:
-                        if (!isNaN(+scope.value)) {
+                        if (scope.value !== null && !isNaN(+scope.value)) {
                             scope.value = Number(scope.value);
                         }
 
