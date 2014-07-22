@@ -28,12 +28,29 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
                                     scope.confirmEditing();
                                     scope.finishEditing();
                                 }
+                            } else {
+                                scope.confirmEditing();
+                                scope.finishEditing();
                             }
                         });
                     });
 
                     scope.$on('editorFocus', function () {
+                        // convert number coming as string into a number:
+                        if (!isNaN(+scope.value)) {
+                            scope.value = Number(scope.value);
+                        }
+
+                        // open the dropdown:
                         element.find('select').select2('open');
+
+                        // try to find an item in the collection by id:
+                        var selectedItem = _.findWhere(scope.data, { id: scope.value });
+                        if (!selectedItem) {
+                            // if it's not found, we assume, that value is coming from
+                            // a keypress on an active cell and  start a search:
+                            element.find('select').select2('search', scope.value);
+                        }
                     });
 
                 },
