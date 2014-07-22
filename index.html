@@ -37,6 +37,7 @@
     var app = angular.module('gridDemo', ['connect-grid', 'connect-grid-select2-editor'])
             .controller('gridDemoController', ['$scope', '$timeout', function ($scope, $timeout) {
                 $scope.countriesList = [
+                    {id: 'is_na', name: 'n/a'},
                     {id: 1, name: 'United States'},
                     {id: 2, name: 'China'},
                     {id: 3, name: 'India'},
@@ -57,7 +58,7 @@
                         {
                             field: 'country', displayName: 'Country', width: 200, cellClass: 'country-cell', editableCellTemplate: '<select2-cell-editor data="countriesList" />',
                             renderer: function (value) {
-                                var country = _.findWhere($scope.countriesList, { id: Number(value) });
+                                var country = _.findWhere($scope.countriesList, { id: value });
                                 if (country) {
                                     return country.name;
                                 }

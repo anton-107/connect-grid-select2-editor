@@ -12,7 +12,14 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
                     element.on('select2-close', function () {
                         $timeout(function () {
                             if (scope.value) {
-                                var selectedItem = _.findWhere(scope.data, { id: Number(scope.value) });
+                                var selectedItem;
+
+                                // convert number coming as string into a number:
+                                if (!isNaN(+scope.value)) {
+                                    scope.value = Number(scope.value);
+                                }
+
+                                selectedItem = _.findWhere(scope.data, { id: scope.value });
 
                                 if (!selectedItem) {
                                     scope.value = null;
