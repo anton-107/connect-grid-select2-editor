@@ -56,7 +56,7 @@
                     });
 
                 },
-                template: '<select ng-model="value" ui-select2="{ width: getCellWidth($parent.$index, $index) }"><option ng-repeat="row in data" value="{{ row.id }}">{{ row.name }}</option></select>'
+                template: '<select ng-model="value" ui-select2="{ width: getCellWidth($parent.$index, $index) }"><option></option><option ng-repeat="row in data" value="{{ row.id }}">{{ row.name }}</option></select>'
             };
         }]);
 
