@@ -12,7 +12,10 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
                     element.on('select2-close', function () {
                         $timeout(function () {
                             // overwrite ui-select2 model value with value read directly from select2:
-                            scope.value = element.find('select').select2('val');
+                            var val = element.find('select').select2('val');
+                            if (_.isString(val) && val.length > 0) {
+                                scope.value = val;
+                            }
 
                             if (scope.value) {
                                 var selectedItem;
@@ -57,7 +60,7 @@ window.angular.module('connect-grid-select2-editor', ['ui.select2']);
                     });
 
                 },
-                template: '<select ng-model="value" ui-select2="{ width: getCellWidth($parent.$index, $index) }"><option ng-repeat="row in data" value="{{ row.id }}">{{ row.name }}</option></select>'
+                template: '<select ng-model="value" ui-select2="{ width: getCellWidth($parent.$index, $index) }"><option></option><option ng-repeat="row in data" value="{{ row.id }}">{{ row.name }}</option></select>'
             };
         }]);
 

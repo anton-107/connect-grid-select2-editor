@@ -1324,7 +1324,7 @@ window.angular.module('connect-grid', []);
                     scope.cancelEditing = function () {
                         scope.value = scope.activeCellValue();
                         scope.setActiveMode(false);
-                        scope.$broadcast('setInputReady');
+                        scope.$parent.$broadcast('setInputReady');
                     };
 
                     scope.confirmEditing = function () {
@@ -1570,7 +1570,7 @@ window.angular.module('connect-grid', []);
                             return columns[col].renderer(value, scope.getRow(row), row, col);
                         }
 
-                        return value || '';
+                        return _.isUndefined(value) ? '' : value;
                     };
 
                     scope.renderCellHeader = function (col) {
@@ -1691,7 +1691,7 @@ window.angular.module('connect-grid', []);
                 }, true);
 
                 var select = function () {
-                    element.find('textarea')[0].value = scope.getCellValue(scope.activeCellModel.row, scope.activeCellModel.column);
+                    element.find('textarea')[0].value = scope.renderCellContent(scope.activeCellModel.row, scope.activeCellModel.column);
                     element.find('textarea')[0].select();
                 };
 
