@@ -1,7 +1,7 @@
 /**
- * Select2 Korean translation.
+ * Select2 <Language> translation.
  * 
- * @author  Swen Mun <longfinfunnel@gmail.com>
+ * Author: Swen Mun <longfinfunnel@gmail.com>
  */
 (function ($) {
     "use strict";

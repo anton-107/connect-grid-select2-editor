@@ -149,7 +149,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             // Set the view and model value and update the angular template manually for the ajax/multiple select2.
             elm.bind("change", function (e) {
               e.stopImmediatePropagation();
-              
+
               if (scope.$$phase || scope.$root.$$phase) {
                 return;
               }
@@ -193,6 +193,19 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
             attrs.$set('multiple', !!newVal);
             elm.select2(opts);
           });
+        }
+
+        // watch for options collection change and refresh the selected value:
+        if (repeatAttr && repeatAttr.split) {
+          var optionsCollectionName = repeatAttr.split(' in ');
+          if (optionsCollectionName.length > 1) {
+            optionsCollectionName = optionsCollectionName[1];
+            scope.$watch(optionsCollectionName, function () {
+              $timeout(function () {
+                elm.select2('val', controller.$viewValue);
+              });
+            }, true);
+          }
         }
 
         // Initialize the plugin late so that the injected DOM does not disrupt the template compiler

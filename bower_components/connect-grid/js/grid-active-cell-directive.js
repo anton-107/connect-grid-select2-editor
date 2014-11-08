@@ -1,13 +1,18 @@
-(function (angular, keypress) {
+(function (angular, keypress, _) {
     'use strict';
 
     angular.module('connect-grid').directive('gridActiveCell', [function () {
         return {
             restrict: 'E',
             require: '?ngModel',
+            scope: true,
             link: function (scope, element, attrs, ngModel) {
 
-                var keyBindingsListener = new keypress.Listener(element.parent('connect-grid')[0]);
+                var keyBindingsListener = new keypress.Listener(element.parent()[0]);
+
+                /* test-code */
+                window.keyBindingsListener = keyBindingsListener;
+                /* end-test-code */
 
                 var defaultKeyBindings = [
                     {
@@ -36,12 +41,14 @@
                     },
                     {
                         'keys': 'tab',
+                        'is_solitary': true,
                         'on_keydown': function () {
                             scope.moveActiveCellRelative(0, 1);
                         }
                     },
                     {
                         'keys': 'shift tab',
+                        'is_solitary': true,
                         'on_keydown': function () {
                             scope.moveActiveCellRelative(0, -1);
                         }
@@ -49,17 +56,26 @@
                     {
                         'keys': 'enter',
                         'on_keydown': function () {
+                            if (!scope.gridOptions.editable) {
+                                return false;
+                            }
+
                             scope.setActiveMode(true);
                         }
                     },
                     {
                         'keys': 'backspace',
                         'on_keydown': function () {
+                            if (!scope.gridOptions.editable) {
+                                return false;
+                            }
+
                             var row = scope.activeCellModel.row;
                             var col = scope.activeCellModel.column;
 
-                            scope.gridOptions.onCellValueChange(scope.getRow(row), scope.getColumnName(col), '', scope.getCellValue(row, col));
+                            var oldVal = scope.getCellValue(row, col);
                             scope.setCellValue('');
+                            scope.gridOptions.onCellValueChange(scope.getRow(row), scope.getColumnName(col), '', oldVal);
                         }
                     }
                 ];
@@ -87,6 +103,13 @@
                     scope.setActiveMode(true);
                 });
 
+                scope.$on('active-cell-set', function () {
+                    if (!scope.$$phase) {
+                        scope.$digest();
+                    }
+                });
+
+                scope.isReadingInput = false;
                 scope.isInEditMode = false;
                 scope.editModeInputBuffer = null;
 
@@ -95,6 +118,10 @@
                 };
 
                 scope.setActiveMode = function (mode) {
+                    if (!scope.gridOptions.editable || !scope.isColumnEditable(scope.activeCellModel.column)) {
+                        return false;
+                    }
+
                     scope.isInEditMode = mode;
                     if (mode) {
                         keyBindingsListener.stop_listening();
@@ -120,7 +147,7 @@
                         // todo: scroll element into view
 
                         if (!scope.$$phase) {
-                            scope.$apply();
+                            scope.$digest();
                         }
                     }
                 };
@@ -156,9 +183,17 @@
                         scope.$apply();
                     }
                 };
+
+                scope.$on('is-reading-input-change', function (e, value) {
+                    scope.isReadingInput = value;
+
+                    if (!scope.$$phase) {
+                        scope.$digest();
+                    }
+                });
             },
             template: '<div class="grid__active-cell" ng-style="{ top: px(activeCellTop()), left: px(activeCellLeft()), width: px(activeCellWidth()), height: px(activeCellHeight()) }"><grid-cell-editor ng-repeat="col in columns()" ng-model="col" column="{{ $index }}"/></div>'
         };
     }]);
 
-})(window.angular, window.keypress);
+})(window.angular, window.keypress, window._);

@@ -12,16 +12,19 @@
         }
     }
 
-    angular.module('connect-grid').directive('gridCellEditorSimpleTextarea', ['$timeout', function ($timeout) {
+    angular.module('connect-grid').directive('gridCellEditorSimpleTextarea', [function () {
         return {
             restrict: 'E',
-            require: '?ngModel',
-            link: function (scope, element, attrs, ngModel) {
+            link: function (scope, element) {
                 var textareaEl = element.find('textarea')[0];
 
+                scope.$on('finish-editing', function () {
+                    textareaEl.blur();
+                });
+
                 element.find('textarea').on('blur', function () {
-                    scope.cancelEditing();
-                    scope.setActiveMode(false);
+                    scope.confirmEditing();
+                    scope.finishEditing();
                 });
 
                 scope.$on('editorFocus', function () {
@@ -30,7 +33,7 @@
                 });
 
             },
-            template: '<textarea ng-model="value">{{ activeCellValue() }}</textarea>'
+            template: '<textarea ng-model="value" ng-model-options="{ updateOn: \'blur\'}">{{ activeCellValue() }}</textarea>'
         };
     }]);
 

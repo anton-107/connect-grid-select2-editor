@@ -16,13 +16,13 @@
   "devDependencies": {
     "angular-mocks": ">=1.0.2"
   },
-  "_release": "v20140708",
+  "_release": "v201408191450",
   "_resolution": {
     "type": "tag",
-    "tag": "v20140708",
-    "commit": "569b1a0343edeae04629ed9e42cbccdccd3f02da"
+    "tag": "v201408191450",
+    "commit": "e1a02526fd8a32f20c4daac4acaf051d03e72852"
   },
   "_source": "git@github.com:schubergphilis/ui-select2.git",
-  "_target": "v20140708",
+  "_target": "v201408191450",
   "_originalSource": "git@github.com:schubergphilis/ui-select2.git"
 }

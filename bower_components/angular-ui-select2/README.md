@@ -3,6 +3,8 @@ fork of ui-select2
 This fork is created to use the latest version of ui-select2 in the Connect Portal, since the original component is not
 well administered in Bower repository.
 
+It also contain a fix for incorrect display of an initial value in case of select options are loaded after the select element is rendered.
+
 ui-select2   [![Build Status](https://travis-ci.org/angular-ui/ui-select2.png)](https://travis-ci.org/angular-ui/ui-select2)
 ==========
 This directive allows you to enhance your select elements with behaviour from the [select2](http://ivaynberg.github.io/select2/) library.
